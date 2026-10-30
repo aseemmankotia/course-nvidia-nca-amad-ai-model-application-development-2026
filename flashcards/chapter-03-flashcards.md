@@ -1,0 +1,16 @@
+## Chapter 3: Data Pipelines, RAG, and the Data Flywheel — Flashcards
+
+| # | Front (Question) | Back (Answer) |
+|---|-----------------|---------------|
+| 1 | What dedup method does NVIDIA data curation tooling use to catch near-duplicate text at scale? | Fuzzy deduplication via MinHash LSH (Locality Sensitive Hashing). Exam tip: exact-match hashing only catches byte-identical strings, not reordered/paraphrased near-duplicates. |
+| 2 | Define the 'data flywheel' concept for the exam. | A continuous loop: production data → curation → retraining/fine-tuning → redeployment → more usage → more data. Exam tip: tested as 'production data improving models over time.' |
+| 3 | cuVS vs. a general ANN library — exam distinction? | cuVS is NVIDIA's GPU-accelerated vector search library; it can serve as an accelerated backend for vector DBs/ANN libraries. Exam tip: pick cuVS when the scenario emphasizes GPU-accelerated vector search. |
+| 4 | What two functions does a retrieval microservice layer typically provide in a RAG pipeline? | Embedding generation (text → vectors) and reranking (scoring retrieved candidates for relevance). Exam tip: embedding = fast first-pass; reranking = precise refinement of top-k results. |
+| 5 | Name the three dedup types used in data curation pipelines. | Exact dedup (hash match), fuzzy dedup (MinHash LSH), semantic dedup (embedding similarity). Exam tip: know which type catches which kind of duplicate. |
+| 6 | Why chunk documents with overlap before embedding? | Embedding models have a max context window; overlapping chunks avoid truncation and preserve semantic continuity across chunk boundaries. Exam tip: overlap reduces context loss at boundaries. |
+| 7 | Large generator models (e.g., Nemotron-class models) — primary exam-relevant use case in data pipelines? | Synthetic data generation — producing instruction/Q&A pairs to augment scarce labeled training data. Exam tip: pair 'synthetic data generation' with large generator models used as teachers. |
+| 8 | What governance check is mandatory before ingesting user-generated text into a training corpus? | PII detection and redaction. Exam tip: governance/compliance checks happen before dedup and quality filtering in the pipeline order. |
+| 9 | What two feedback sources drive a data flywheel's continuous improvement? | Human feedback (annotation/labeling) and automated evaluation (metrics/guardrail checks). Exam tip: the exam expects BOTH human and automated signals feeding curation. |
+| 10 | RAG answer quality degrades over months in production — most likely tested root cause? | Stale, duplicate, or low-quality content in the knowledge base — not model size. Exam tip: fix via re-curating the source corpus, not upgrading the LLM. |
+| 11 | Functional difference: embedding model vs. reranker model. | Embedding model: converts text to vectors for fast approximate similarity search. Reranker: scores query-document pairs directly for higher precision but slower. Exam tip: embed first for recall, rerank for precision. |
+| 12 | What criteria matter when selecting a vector store for a RAG scenario (exam angle)? | Scale (vector count), ANN index type (e.g., HNSW, IVF), GPU acceleration support, and metadata filtering. Exam tip: match the scenario's scale/latency requirement to the vector store's features, don't just pick 'a vector DB.' |
